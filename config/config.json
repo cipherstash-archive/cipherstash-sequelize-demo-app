@@ -1,0 +1,26 @@
+{
+  "development": {
+    "password": null,
+    "database": "sequelize-example",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "native": true,
+    "timezone": "Australia/Sydney"
+  },
+  "test": {
+    "password": null,
+    "database": "sequelize-example",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "native": true,
+    "timezone": "Australia/Sydney"
+  },
+  "production": {
+    "password": null,
+    "database": "sequelize-example",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "native": true,
+    "timezone": "Australia/Sydney"
+  }
+}
