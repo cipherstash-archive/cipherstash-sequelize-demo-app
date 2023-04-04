@@ -408,13 +408,20 @@ module.exports = {
 };
 ```
 
-Once you're sure that you're ready to drop the original columns run the migration:
+> **Warning**
+>
+> **Once you remove the plaintext columns, anything that hasn't been encrypted will be lost.**
+>
+> Before you run the remove column step, it is very important that you:
+>
+>  - Create a backup of all your data, in case you need to restore
+>  - Ensure all your data is encrypted, by running [the `encrypt-data.js` script](#encrypt-the-sensitive-data)
+
+Once you're sure that you're ready to drop the plaintext columns, run the migration:
 
 ``` bash
 npx sequelize-cli db:migrate
 ```
-
-> Note: it's very important that all your data is encrypted before running the remove column step and you have created backups of the database in case anything goes wrong. Once you remove the plaintext columns anything that hasn't been encrypted will be lost.
 
 To verify everything is still working correctly check out the demo app on `localhost:3000`
 
