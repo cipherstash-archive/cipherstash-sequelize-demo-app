@@ -26,11 +26,12 @@
     "vite": "^4.2.1"
   },
   "dependencies": {
+    "@cipherstash/libpq": "^1.8.23",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "pg": "^8.10.0",
-    "pg-native": "^3.0.1",
+    "pg-native": "npm:@cipherstash/pg-native@^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
