@@ -173,7 +173,7 @@ Client ID          : <a UUID style ID>
 Client Key [hex]   : <a long hex string>
 ```
 
-Note down the client key somewhere safe, like a password vault.
+**Note down the client key somewhere safe**, like a password vault.
 You will only ever see this credential once.
 This is your personal key, and you should not share it.
 
@@ -245,7 +245,9 @@ We do this by creating a Sequelize migration:
 npx sequelize-cli migration:generate --name add-protect-database-extensions
 ```
 
-And adding the following code that runs the install/uninstall scripts packaged with `@cipherstash/libpq`.
+This will generate a migration file under `migrations/`
+
+Open up that migration file, and add this code to run the install/uninstall scripts packaged with `@cipherstash/libpq`:
 
 ```js
 'use strict';
