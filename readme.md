@@ -246,7 +246,7 @@ We do this by creating a Sequelize migration:
 npx sequelize-cli migration:generate --name add-protect-database-extensions
 ```
 
-This will generate a migration file under `migrations/`
+This will generate a migration file under `migrations/`.
 
 Open up that migration file, and add this code to run the install/uninstall scripts packaged with `@cipherstash/libpq`:
 
@@ -275,7 +275,9 @@ To set up those encrypted columns, generate another Sequelize migration:
 npx sequelize-cli migration:generate --name add-protect-columns-to-patients-table
 ```
 
-And then add the following code that creates the CipherStash columns:
+Per the last step, this will generate another migration file under `migrations/`.
+
+Open up that new migration file, and add the following code that creates the CipherStash columns:
 
 ```js
 /** @type {import('sequelize-cli').Migration} */
