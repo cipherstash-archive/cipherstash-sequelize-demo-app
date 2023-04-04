@@ -384,7 +384,9 @@ Create the migration using `sequelize-cli`:
 npx sequelize-cli migration:generate --name drop-plaintext-columns
 ```
 
-And set the migration to remove the plaintext columns:
+This will generate another migration file under `migrations/`.
+
+Open up that new migration file, and add this code to remove the plaintext columns:
 
 ``` javascript
 /** @type {import('sequelize-cli').Migration} */
