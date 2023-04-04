@@ -8,6 +8,7 @@ This is an example repo integrating `@cipherstash/pg-native` with Sequelize and 
 
 - Node.js >= 18.x
 - [PostgreSQL](https://www.postgresql.org/download/)
+- Optional: [direnv](https://direnv.net/docs/installation.html)
 
 ### Get started
 
