@@ -21,32 +21,32 @@ cd cipherstash-sequelize-example
 
 1. Install dependencies:
 
-```
+``` bash
 npm install
 ```
 
 2. Create the database:
 
 
-```
+``` bash
 npx sequelize-cli db:create
 ```
 
 3. Run the migrations:
 
-```
+``` bash
 npx sequelize-cli db:migrate
 ```
 
 4. Seed the database with example data:
 
-```
+``` bash
 npx sequelize-cli db:seed:all
 ```
 
 5. Run the demo:
 
-```
+``` bash
 npm start
 ```
 
@@ -79,7 +79,7 @@ To use CipherStash you'll need a CipherStash account and workspace.
 
 You can signup from the CLI:
 
-```bash
+``` bash
 stash signup
 ```
 
@@ -95,13 +95,13 @@ Under the hood `@cipherstash/pg-native` uses the package `@cipherstash/libpq` wh
 
 To install them both first install `@cipherstash/libpq`:
 
-```
+``` bash
 npm add @cipherstash/libpq
 ```
 
 And then `@cipherstash/pg-native` using an npm alias:
 
-```
+``` bash
 npm add pg-native@npm:@cipherstash/pg-native
 ```
 
@@ -123,7 +123,7 @@ A dataset holds configuration for one or more database tables that contain data 
 
 Create our first dataset by running:
 
-```
+``` bash
 stash datasets create patients --description "Data about patients"
 ```
 
@@ -148,7 +148,7 @@ A dataset can have many clients (for example, different applications working wit
 
 Use the dataset ID from step 2 to create a client (making sure you substitute your own dataset ID):
 
-```
+``` bash
 stash clients create --dataset-id $DATASET_ID "Express app"
 ```
 
@@ -242,7 +242,7 @@ This migration adds in the custom types `ore_64_8_v1` and `ore_64_8_v1_term`.
 
 We do this by creating a Sequelize migration:
 
-```
+``` bash
 npx sequelize-cli migration:generate --name add-protect-database-extensions
 ```
 
@@ -346,7 +346,7 @@ There is a script provided at the root of the demo that uses a naive method to i
 
 You can run it with the following command:
 
-```
+``` bash
 node encrypt-data.js
 ```
 
@@ -362,12 +362,12 @@ In this mode all data is read from ciphertext fields and writes will save both p
 
 After updating the configuration push it to CipherStash:
 
-```bash
+``` bash
 stash upload-config --file dataset.yml --client-id $CS_CLIENT_ID --client-key $CS_CLIENT_KEY
 ```
 
 After the upload completes start the server and navigate to `localhost:3000` to verify all patients are showing correctly
-```
+``` bash
 npm start
 ```
 
@@ -380,13 +380,13 @@ Once you've verified that everything is you can create a migration that drops th
 
 Create the migration using `sequelize-cli`:
 
-```
+``` bash
 npx sequelize-cli migration:generate --name drop-plaintext-columns
 ```
 
 And set the migration to remove the plaintext columns:
 
-```
+``` javascript
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface) {
@@ -402,7 +402,7 @@ module.exports = {
 
 Once you're sure that you're ready to drop the original columns run the migration:
 
-```
+``` bash
 npx sequelize-cli db:migrate
 ```
 
@@ -410,7 +410,7 @@ npx sequelize-cli db:migrate
 
 To verify everything is still working correctly check out the demo app on `localhost:3000`
 
-```
+``` bash
 npm start
 ```
 
