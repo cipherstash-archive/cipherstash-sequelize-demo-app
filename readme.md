@@ -10,6 +10,12 @@ This is an example repo integrating `@cipherstash/pg-native` with Sequelize and 
 - [PostgreSQL](https://www.postgresql.org/download/)
 - Optional: [direnv](https://direnv.net/docs/installation.html)
 
+If you're using [asdf](https://asdf-vm.com/), we ship a `.tool-versions` you can use to set these up:
+
+``` bash
+asdf install
+```
+
 ### Get started
 
 0. Clone the repository:
