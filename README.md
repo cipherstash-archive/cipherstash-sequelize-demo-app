@@ -8,6 +8,13 @@ This is an example repo integrating `@cipherstash/pg-native` with Sequelize and 
 
 - Node.js >= 18.x
 - [PostgreSQL](https://www.postgresql.org/download/)
+- Optional: [direnv](https://direnv.net/docs/installation.html)
+
+If you're using [asdf](https://asdf-vm.com/), we ship a `.tool-versions` you can use to set these up:
+
+``` bash
+asdf install
+```
 
 ### Get started
 
@@ -20,32 +27,32 @@ cd cipherstash-sequelize-example
 
 1. Install dependencies:
 
-```
+``` bash
 npm install
 ```
 
 2. Create the database:
 
 
-```
+``` bash
 npx sequelize-cli db:create
 ```
 
 3. Run the migrations:
 
-```
+``` bash
 npx sequelize-cli db:migrate
 ```
 
 4. Seed the database with example data:
 
-```
+``` bash
 npx sequelize-cli db:seed:all
 ```
 
 5. Run the demo:
 
-```
+``` bash
 npm start
 ```
 
@@ -78,7 +85,7 @@ To use CipherStash you'll need a CipherStash account and workspace.
 
 You can signup from the CLI:
 
-```bash
+``` bash
 stash signup
 ```
 
@@ -94,13 +101,13 @@ Under the hood `@cipherstash/pg-native` uses the package `@cipherstash/libpq` wh
 
 To install them both first install `@cipherstash/libpq`:
 
-```
+``` bash
 npm add @cipherstash/libpq
 ```
 
 And then `@cipherstash/pg-native` using an npm alias:
 
-```
+``` bash
 npm add pg-native@npm:@cipherstash/pg-native
 ```
 
@@ -122,7 +129,7 @@ A dataset holds configuration for one or more database tables that contain data 
 
 Create our first dataset by running:
 
-```
+``` bash
 stash datasets create patients --description "Data about patients"
 ```
 
@@ -147,7 +154,7 @@ A dataset can have many clients (for example, different applications working wit
 
 Use the dataset ID from step 2 to create a client (making sure you substitute your own dataset ID):
 
-```
+``` bash
 stash clients create --dataset-id $DATASET_ID "Express app"
 ```
 
@@ -173,7 +180,7 @@ Client ID          : <a UUID style ID>
 Client Key [hex]   : <a long hex string>
 ```
 
-Note down the client key somewhere safe, like a password vault.
+**Note down the client key somewhere safe**, like a password vault.
 You will only ever see this credential once.
 This is your personal key, and you should not share it.
 
@@ -241,11 +248,13 @@ This migration adds in the custom types `ore_64_8_v1` and `ore_64_8_v1_term`.
 
 We do this by creating a Sequelize migration:
 
-```
+``` bash
 npx sequelize-cli migration:generate --name add-protect-database-extensions
 ```
 
-And adding the following code that runs the install/uninstall scripts packaged with `@cipherstash/libpq`.
+This will generate a migration file under `migrations/`.
+
+Open up that migration file, and add this code to run the install/uninstall scripts packaged with `@cipherstash/libpq`:
 
 ```js
 'use strict';
@@ -272,7 +281,9 @@ To set up those encrypted columns, generate another Sequelize migration:
 npx sequelize-cli migration:generate --name add-protect-columns-to-patients-table
 ```
 
-And then add the following code that creates the CipherStash columns:
+Per the last step, this will generate another migration file under `migrations/`.
+
+Open up that new migration file, and add the following code that creates the CipherStash columns:
 
 ```js
 /** @type {import('sequelize-cli').Migration} */
@@ -341,7 +352,7 @@ There is a script provided at the root of the demo that uses a naive method to i
 
 You can run it with the following command:
 
-```
+``` bash
 node encrypt-data.js
 ```
 
@@ -357,12 +368,12 @@ In this mode all data is read from ciphertext fields and writes will save both p
 
 After updating the configuration push it to CipherStash:
 
-```bash
+``` bash
 stash upload-config --file dataset.yml --client-id $CS_CLIENT_ID --client-key $CS_CLIENT_KEY
 ```
 
 After the upload completes start the server and navigate to `localhost:3000` to verify all patients are showing correctly
-```
+``` bash
 npm start
 ```
 
@@ -375,13 +386,15 @@ Once you've verified that everything is you can create a migration that drops th
 
 Create the migration using `sequelize-cli`:
 
-```
+``` bash
 npx sequelize-cli migration:generate --name drop-plaintext-columns
 ```
 
-And set the migration to remove the plaintext columns:
+This will generate another migration file under `migrations/`.
 
-```
+Open up that new migration file, and add this code to remove the plaintext columns:
+
+``` javascript
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface) {
@@ -395,26 +408,33 @@ module.exports = {
 };
 ```
 
-Once you're sure that you're ready to drop the original columns run the migration:
+> **Warning**
+>
+> **Once you remove the plaintext columns, anything that hasn't been encrypted will be lost.**
+>
+> Before you run the remove column step, it is very important that you:
+>
+>  - Create a backup of all your data, in case you need to restore
+>  - Ensure all your data is encrypted, by running [the `encrypt-data.js` script](#encrypt-the-sensitive-data)
 
-```
+Once you're sure that you're ready to drop the plaintext columns, run the migration:
+
+``` bash
 npx sequelize-cli db:migrate
 ```
 
-> Note: it's very important that all your data is encrypted before running the remove column step and you have created backups of the database in case anything goes wrong. Once you remove the plaintext columns anything that hasn't been encrypted will be lost.
-
 To verify everything is still working correctly check out the demo app on `localhost:3000`
 
-```
+``` bash
 npm start
 ```
 
 ### Viewing logs of encryptions and decryptions
 
-To view the logs showing encryptions and decryptions of data, go to your workspace folder `~/.cipherstash/<your workspace id>`.
+The CipherStash driver creates a local log of encryptions and decryptions for a given workspace in `~/.cipherstash/<your workspace id>`.
 
-Run:
+To see a real time log of cryptography operations, run:
 
-```bash
-tail -F decryptions.log
+``` bash
+tail -F ~/.cipherstash/*/decryptions.log
 ```
