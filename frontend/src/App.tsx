@@ -9,7 +9,7 @@ import {
 } from "react-router";
 import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 import { RegisterOptions, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface Patient {
   id: string;
@@ -22,6 +22,13 @@ interface Patient {
 
   createdAt: string;
   updatedAt: string;
+}
+
+interface SearchValue {
+  full_name?: string,
+  email?: string,
+  allergies?: string,
+  medications?: string
 }
 
 function apiUrl(path: string): string {
@@ -38,11 +45,41 @@ function Patients() {
     direction: "asc" | "desc";
   }>();
 
-  const patients = useQuery(["patients", sort], async () => {
+  const inputEl = useRef<HTMLInputElement>(null);
+  const [search, setSearch] = useState<SearchValue>({});
+
+  const { register, reset, handleSubmit } = useForm<SearchValue>();
+
+  const patients = useQuery(["patients", sort, search], async () => {
     let url = apiUrl("patients");
 
+    const params = new URLSearchParams();
+
     if (sort) {
-      url += `?sortBy=${sort.field}&direction=${sort.direction}`;
+      params.append("sortBy", sort.field);
+      params.append("direction", sort.direction);
+    }
+
+    if (search.full_name) {
+      params.append("fullNameTerm", search.full_name);
+    }
+
+    if (search.email) {
+      params.append("emailTerm", search.email);
+    }
+
+    if (search.allergies) {
+      params.append("allergiesTerm", search.allergies);
+    }
+
+    if (search.medications) {
+      params.append("medicationsTerm", search.medications);
+    }
+
+    const paramString = params.toString();
+
+    if (paramString) {
+      url += '?' + paramString;
     }
 
     const res = await fetch(url);
@@ -95,7 +132,33 @@ function Patients() {
     );
   }
 
-  return (
+  function field<N extends keyof SearchValue>(name: N) {
+    return (
+      <label className="grid">
+        <span className="text-sm text-gray-800">{name}</span>
+        <input type="text" className="p-2 border rounded" {...register(name)} />
+      </label>
+    );
+  }
+
+  return (<div className="grid gap-2 grid-cols-1">
+    <div>
+      <span className="text-lg">Filters</span>
+      <form className="flex gap-2 items-end wrap" onSubmit={handleSubmit(val => setSearch(val))}>
+        {field("full_name")}
+        {field("email")}
+        {field("medications")}
+        {field("allergies")}
+        <button className={cn("bg-gray-100 border p-2 rounded h-[42px] w-24")}>
+          Filter
+        </button>
+        <button type="submit" className={cn("bg-gray-100 border p-2 rounded h-[42px] w-24")} onClick={() => {
+          reset();
+        }}>
+          Clear
+        </button>
+      </form>
+    </div>
     <table className="table-auto w-full">
       <thead>
         <tr>
@@ -162,7 +225,7 @@ function Patients() {
         </tbody>
       )}
     </table>
-  );
+  </div>);
 }
 
 function Patient() {

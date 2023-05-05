@@ -3,6 +3,7 @@ const { json, urlencoded } = require("body-parser");
 const cors = require("cors");
 
 const { sequelize } = require("./models");
+const { Op } = require("sequelize");
 
 /**
  * @type {import('sequelize').Sequelize['models']}
@@ -43,14 +44,37 @@ app.get(
   handler(async (req, res) => {
     let order = undefined;
 
+    /**
+     * @type {import('sequelize').WhereOptions}
+     */
+    let where = {};
+
     if (req.query.sortBy) {
       order = [
         [req.query.sortBy, req.query.direction === "asc" ? "ASC" : "DESC"],
       ];
     }
 
+    if (req.query.fullNameTerm) {
+      where['full_name'] = { [Op.or]: [{ [Op.like]: req.query.fullNameTerm }, { [Op.substring]: req.query.fullNameTerm }] }
+    }
+
+    if (req.query.emailTerm) {
+      where['email'] = { [Op.or]: [{ [Op.like]: req.query.emailTerm }, { [Op.substring]: req.query.emailTerm }] }
+    }
+
+    if (req.query.medicationsTerm) {
+      where['medications'] = { [Op.or]: [{ [Op.like]: req.query.medicationsTerm }, { [Op.substring]: req.query.medicationsTerm }] }
+    }
+
+    if (req.query.allergiesTerm) {
+      where['allergies'] = { [Op.or]: [{ [Op.like]: req.query.allergiesTerm }, { [Op.substring]: req.query.allergiesTerm }] }
+    }
+
+
     const patients = await models.patient.findAll({
       order,
+      where
     });
 
     res.status(200).json(patients);
