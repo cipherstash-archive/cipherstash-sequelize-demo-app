@@ -62,9 +62,27 @@ We now have a running application with Sequelize and Express that we can use to 
 
 ### Install the CipherStash CLI
 
-The CipherStash CLI is used to manage your account (e.g login) and encryption schema.
+The CipherStash CLI is used to manage your encryption schema.
 
 The encryption schema defines what encrypted indexes exist, and what queries you can perform on those indexes.
+
+#### On macOS
+
+Install via Homebrew:
+
+```bash
+brew install cipherstash/tap/stash
+```
+
+
+> **Note**
+>
+> You will need to grant an exception in System Settings the first time you run the binary.
+>
+> We will release a fix for this in Q2 2023.
+
+
+#### On Linux
 
 Download the binary for your platform:
 
@@ -72,12 +90,24 @@ Download the binary for your platform:
 - [Linux ARM64 musl](https://github.com/cipherstash/cli-releases/releases/latest/download/stash-aarch64-unknown-linux-musl)
 - [Linux x86_64](https://github.com/cipherstash/cli-releases/releases/latest/download/stash-x86_64-unknown-linux-gnu)
 - [Linux x86_64 musl](https://github.com/cipherstash/cli-releases/releases/latest/download/stash-x86_64-unknown-linux-musl)
-- [macOS ARM](https://github.com/cipherstash/cli-releases/releases/latest/download/stash-aarch64-apple-darwin)
-- [macOS x86_64](https://github.com/cipherstash/cli-releases/releases/latest/download/stash-x86_64-apple-darwin)
-- [Windows x86_64 GNU](https://github.com/cipherstash/cli-releases/releases/latest/download/stash-x86_64-pc-windows-gnu.exe)
-- [Windows x86_64 MSVC](https://github.com/cipherstash/cli-releases/releases/latest/download/stash-x86_64-pc-windows-msvc.exe)
 
-Place the binary on your `$PATH`, so you can run it.
+1. Make the binary executable:
+   ```bash
+   # on x86_64
+   chmod +x $path_to/stash-x86_64-unknown-linux-gnu
+
+   # on ARM64
+   chmod +x $path_to/stash-aarch64-unknown-linux-gnu
+   ```
+2. Rename the binary:
+   ```bash
+   # on x86_64
+   mv stash-x86_64-unknown-linux-gnu stash
+
+   # on ARM64
+   mv stash-aarch64-unknown-linux-gnu stash
+   ```
+3. Place the binary on your `$PATH`, so you can run it.
 
 ### Get a CipherStash account and workspace
 
