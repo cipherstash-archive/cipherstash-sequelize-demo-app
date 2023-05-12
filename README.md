@@ -264,7 +264,7 @@ This configuration file defines two types of encrypted indexes for the columns w
 Now we push this configuration to CipherStash:
 
 ```bash
-stash upload-config --file dataset.yml --client-id $CS_CLIENT_ID --client-key $CS_CLIENT_KEY
+stash datasets config upload --file dataset.yml --client-id $CS_CLIENT_ID --client-key $CS_CLIENT_KEY
 ```
 
 ### Add and apply migrations
@@ -399,7 +399,7 @@ In this mode all data is read from ciphertext fields and writes will save both p
 After updating the configuration push it to CipherStash:
 
 ``` bash
-stash upload-config --file dataset.yml --client-id $CS_CLIENT_ID --client-key $CS_CLIENT_KEY
+stash datasets config upload --file dataset.yml --client-id $CS_CLIENT_ID --client-key $CS_CLIENT_KEY
 ```
 
 After the upload completes start the server and navigate to `localhost:3000` to verify all patients are showing correctly
