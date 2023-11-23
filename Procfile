@@ -1,2 +1,2 @@
-web: npm start
+web: tandem npm start
 tandem: tandem
