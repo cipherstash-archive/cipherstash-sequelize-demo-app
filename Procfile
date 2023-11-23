@@ -1,2 +1,2 @@
 web: npm start
-worker: tandem
+tandem: tandem
