@@ -9,12 +9,22 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
+const setPort = (config) => !!process.env.STASH_DB_PORT ? { ...config, port: parseInt(process.env.STASH_DB_PORT, 10) } : config;
+//const setPort = (config) => ({ ...config, port: parseInt(process.env.STASH_DB_PORT, 10) })
+
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+  sequelize = new Sequelize(
+    process.env.STASH_DB_HOST || config.database,
+    config.username,
+    config.password,
+    setPort(config)
+  );
 }
+
+//console.debug(sequelize);
 
 fs
   .readdirSync(__dirname)
