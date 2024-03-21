@@ -2,3 +2,4 @@ node_modules/
 
 # Don't accidentally commit local credentials
 .envrc
+tandem.toml

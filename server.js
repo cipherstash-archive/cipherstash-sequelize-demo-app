@@ -74,7 +74,8 @@ app.get(
 
     const patients = await models.patient.findAll({
       order,
-      where
+      where,
+      __identity: "some-long-token" // Set the JWT here
     });
 
     res.status(200).json(patients);

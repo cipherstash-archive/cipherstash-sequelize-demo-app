@@ -1,6 +1,7 @@
 {
   "development": {
-    "password": null,
+    "user": "dan",
+    "password": "12qwaszx",
     "database": "sequelize-example",
     "host": "127.0.0.1",
     "dialect": "postgres",
@@ -16,11 +17,9 @@
     "timezone": "Australia/Sydney"
   },
   "production": {
-    "password": null,
-    "database": "sequelize-example",
-    "host": "127.0.0.1",
     "dialect": "postgres",
     "native": true,
-    "timezone": "Australia/Sydney"
+    "timezone": "Australia/Sydney",
+    "use_env_variable": "DATABASE_URL"
   }
 }
