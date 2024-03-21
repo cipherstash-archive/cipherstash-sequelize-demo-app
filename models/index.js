@@ -9,7 +9,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
-const setPort = (config) => !!process.env.STASH_DB_PORT ? { ...config, port: parseInt(process.env.STASH_DB_PORT, 10) } : config;
+const setPort = (config) => !!process.env.TANDEM_PORT ? { ...config, port: parseInt(process.env.TANDEM_PORT, 10) } : config;
 //const setPort = (config) => ({ ...config, port: parseInt(process.env.STASH_DB_PORT, 10) })
 
 let sequelize;

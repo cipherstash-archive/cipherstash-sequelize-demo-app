@@ -21,6 +21,24 @@ module.exports = (sequelize, DataTypes) => {
     allergies: DataTypes.STRING,
     medications: DataTypes.STRING
   }, {
+    hooks: {
+      beforeFind: async (options) => {
+        console.error('beforeFind hook', options);
+        if (options.__identity) {
+          await sequelize.query(
+            // Uncomment this line when using with Proxy
+            '--SET IDENTITY TO ?', {
+              replacements: [options.__identity],
+            }
+          );
+          delete options.__identity;
+        }
+      },
+      beforeFindAfterOptions: (options) => {
+        // __identity is not present because it has been removed in the beforeFind hook
+        console.error('beforeFindAfterOptions hook', options);
+      },
+    },
     sequelize,
     modelName: 'patient',
   });
